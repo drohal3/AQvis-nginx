@@ -16,6 +16,11 @@ http {
     server {
         listen 80;
 
+        location /nginx_health {
+            default_type text/plain;
+            return 200 'OK';
+        }
+
         location /api {
             proxy_pass http://backend;
             proxy_set_header Host $host;
