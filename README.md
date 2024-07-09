@@ -1,1 +1,1 @@
-# AQvis-nginx
+# nginx of AQvis app
