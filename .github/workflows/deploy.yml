@@ -34,3 +34,28 @@ jobs:
           docker build -t $ECR_REGISTRY/$REPOSITORY .
           docker push $ECR_REGISTRY/$REPOSITORY
           echo "image=$ECR_REGISTRY/$REPOSITORY" >> $GITHUB_OUTPUT
+  notify:
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message),'#skip') }}
+    needs: [ publish-ecr ]
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: notify success
+        if: ${{ success() }}
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: info
+          text: New version of aqvis-nginx image published
+          description: By ${{ github.triggering_actor }}
+          details: Published successfully!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: notify fail
+        #  TODO: fix notify on failure
+        if: ${{ !success() }}
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: error
+          text: New version of aqvis-nginx image could not be published!
+          description: Triggered by ${{ github.triggering_actor }}, commit urls ${{ join(github.event.commits.*.url, ' , ') }}
+          details: Publishing Failed!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
