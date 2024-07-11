@@ -5,8 +5,8 @@ events {
 }
 
 http {
-    upstream frontend {
-        server ${FRONTEND_SERVICE_HOST}:${FRONTEND_SERVICE_PORT};
+    upstream backend {
+        server ${BACKEND_SERVICE_HOST}:${BACKEND_SERVICE_PORT};
     }
 
     server {
