@@ -6,11 +6,11 @@ events {
 
 http {
     upstream frontend {
-        server ${FRONTEND_SERVICE_HOST}:${FRONTEND_SERVICE_PORT};
+        server ${FRONTEND_SERVICE_HOST}:${FRONTEND_SERVICE_PORT}/;
     }
 
     upstream backend {
-        server ${BACKEND_SERVICE_HOST}:${BACKEND_SERVICE_PORT};
+        server ${BACKEND_SERVICE_HOST}:${BACKEND_SERVICE_PORT}/;
     }
 
     server {
@@ -22,7 +22,7 @@ http {
         }
 
         location ~ ^/api/ {
-            proxy_pass http://backend/;
+            proxy_pass http://backend;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
