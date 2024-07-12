@@ -10,7 +10,8 @@ http {
     }
 
     server {
-        listen 80;
+        listen 127.0.0.1;
+        server_name localhost;
 
         location /nginx_health {
             default_type text/plain;
