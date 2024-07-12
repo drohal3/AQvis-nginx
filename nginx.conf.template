@@ -18,6 +18,11 @@ http {
             return 200 'OK';
         }
 
+        location /nginx_upstream {
+            default_type text/plain;
+            return 200 backend;
+        }
+
         location /api/ {
             proxy_pass http://backend/;
             proxy_set_header Host $host;
